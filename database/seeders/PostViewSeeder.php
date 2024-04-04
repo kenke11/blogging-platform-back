@@ -20,7 +20,7 @@ class PostViewSeeder extends Seeder
         $posts = Post::all();
 
         $users->each(function ($user) use ($posts) {
-            $user->posts()->attach(
+            $user->views()->attach(
                 $posts->random(rand(1, 5))->pluck('id')->toArray()
             );
         });
