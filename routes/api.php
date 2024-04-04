@@ -21,6 +21,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserController::class)->group(function () {
        Route::get('/user', 'getAuthUser')->name('user.get_auth_user');
     });
+
+    Route::controller(PostController::class)->group(function () {
+        Route::post('posts', 'store')->name('posts.store');
+    });
 });
 
 Route::controller(AuthController::class)->group(function () {
