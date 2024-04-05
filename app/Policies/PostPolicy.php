@@ -11,6 +11,11 @@ class PostPolicy
 {
     use HandlesAuthorization;
 
+    public function editorPosts(User $user): bool
+    {
+        return $user->hasRole('editor');
+    }
+
     /**
      * Determine whether the user can create models.
      *

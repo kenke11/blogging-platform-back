@@ -22,6 +22,19 @@ class PostController extends Controller
         return response()->json(['posts' => $posts]);
     }
 
+    public function getEditorPosts(User $user): JsonResponse
+    {
+        $this->authorize('editorPosts', Post::class);
+
+        $posts = $user->posts()->with('user')
+            ->withCount('views')
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
+
+        return response()->json(['posts' => $posts]);
+    }
+
+
     public function store(PostStoreRequest $request): JsonResponse
     {
         $this->authorize('create', Post::class);

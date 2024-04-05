@@ -50,9 +50,9 @@ class User extends Authenticatable
         return $this->getRoleNames()->first();
     }
 
-    public function posts(): BelongsToMany
+    public function posts(): HasMany
     {
-        return $this->belongsToMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 
     public function views(): BelongsToMany
