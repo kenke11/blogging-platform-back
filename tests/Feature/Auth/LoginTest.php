@@ -89,4 +89,43 @@ class LoginTest extends TestCase
                 'password' => 'The password must be at least 8 characters.'
             ]);
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_authenticated_user_data()
+    {
+        Role::create(['name' => 'admin']);
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+            ->getJson(route('user.get_auth_user'));
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['user' => [
+                'id',
+                'name',
+                'email',
+                'role',
+            ]]);
+
+        $userData = $response->json('user');
+        $this->assertEquals($user->id, $userData['id']);
+        $this->assertEquals($user->name, $userData['name']);
+        $this->assertEquals($user->email, $userData['email']);
+        $this->assertEquals('admin', $userData['role']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_error_when_user_unauthenticated()
+    {
+        $response = $this->getJson(route('user.get_auth_user'));
+
+        $response->assertStatus(401)
+            ->assertJson(['message' => 'Unauthenticated.']);
+    }
 }
