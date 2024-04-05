@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(PostController::class)->group(function () {
         Route::post('posts', 'store')->name('posts.store');
         Route::put('posts/{post}/update', 'update')->name('posts.update');
+        Route::post('posts/{post}/destroy', 'destroy')->name('posts.destroy');
     });
 });
 

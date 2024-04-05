@@ -17,7 +17,7 @@ class PostPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): \Illuminate\Auth\Access\Response|bool
     {
         return $user->hasRole('editor');
     }
@@ -45,12 +45,12 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, Post $post): \Illuminate\Auth\Access\Response|bool
     {
         if ($user->hasRole('editor') && $user->id !== +$post->user_id){
             return false;
         }
 
-        $user->hasRole(['admin', 'editor']);
+        return $user->hasRole(['admin', 'editor']);
     }
 }

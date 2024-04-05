@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostDestroyRequest;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -43,5 +45,16 @@ class PostController extends Controller
         ]);
 
         return response()->json(['message' => 'Post edited successfully']);
+    }
+
+    public function destroy(PostDestroyRequest $request, Post $post): JsonResponse
+    {
+        Log::info($post);
+
+        $this->authorize('delete', $post);
+
+        $post->delete();
+
+        return response()->json(['message' => 'Post deleted successfully']);
     }
 }
