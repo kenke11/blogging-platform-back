@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class PostPolicy
 {
@@ -28,9 +29,9 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post): \Illuminate\Auth\Access\Response|bool
     {
-        if ($user->hasRole('editor') && $user->id !== $post->user_id){
+        if ($user->hasRole('editor') && $user->id !== +$post->user_id){
             return false;
         }
 
@@ -46,7 +47,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        if ($user->hasRole('editor') && $user->id !== $post->user_id){
+        if ($user->hasRole('editor') && $user->id !== +$post->user_id){
             return false;
         }
 

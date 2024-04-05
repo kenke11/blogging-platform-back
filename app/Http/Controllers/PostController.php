@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 
@@ -12,6 +13,7 @@ class PostController extends Controller
     {
         $posts = Post::with('user')
             ->withCount('views')
+            ->orderBy('created_at', 'desc')
             ->paginate(5);
 
         return response()->json(['posts' => $posts]);
@@ -28,5 +30,18 @@ class PostController extends Controller
         ]);
 
         return response()->json(['message' => 'Post created successfully']);
+    }
+
+    public function update(PostUpdateRequest $request, Post $post): JsonResponse
+    {
+        $this->authorize('update',  $post);
+
+        $post->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'published_date' => date($request->published_date)
+        ]);
+
+        return response()->json(['message' => 'Post edited successfully']);
     }
 }
