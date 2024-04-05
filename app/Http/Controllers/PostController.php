@@ -8,7 +8,6 @@ use App\Http\Requests\PostUpdateRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -74,8 +73,6 @@ class PostController extends Controller
 
     public function destroy(PostDestroyRequest $request, Post $post): JsonResponse
     {
-        Log::info($post);
-
         $this->authorize('delete', $post);
 
         $post->delete();
