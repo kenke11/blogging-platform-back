@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentDestroyRequest;
 use App\Http\Requests\CommentStoreRequest;
 use App\Models\Comment;
 use App\Models\Post;
@@ -27,5 +28,14 @@ class CommentController extends Controller
         ]);
 
         return response()->json(['message' => 'comment stored successfully', 'comment' => $comment]);
+    }
+
+    public function destroy(CommentDestroyRequest $request, Comment $comment): JsonResponse
+    {
+        $this->authorize('delete', $comment);
+
+        $comment->delete();
+
+        return response()->json(['message' => 'Comment deleted successfully']);
     }
 }

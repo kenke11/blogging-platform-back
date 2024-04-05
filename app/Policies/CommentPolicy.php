@@ -28,9 +28,11 @@ class CommentPolicy
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Comment $comment)
+    public function delete(User $user, Comment $comment): \Illuminate\Auth\Access\Response|bool
     {
-        if ($user->hasRole(['editor', 'user']) && $user->id !== +$comment->user->id)
+        if ($user->hasRole(['editor', 'user']) && $user->id !== +$comment->user->id) {
+            return false;
+        }
 
         return  $user->hasRole(['admin', 'editor', 'user']);
     }
