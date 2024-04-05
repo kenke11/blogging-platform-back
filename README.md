@@ -5,7 +5,7 @@
 ### Clone repository
 
 ```bash
-git clone 
+git clone https://github.com/kenke11/blogging-platform-back.git
 ```
 
 ### Go to project folder
