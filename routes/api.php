@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -36,3 +37,5 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::get('comments/posts/{post}', [CommentController::class, 'index'])->name('comments.index');
