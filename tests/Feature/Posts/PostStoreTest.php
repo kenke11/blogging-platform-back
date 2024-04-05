@@ -106,4 +106,25 @@ class PostStoreTest extends TestCase
             ]);
 
     }
+
+    /**
+     * @test
+     */
+    public function post_store_unauthorized()
+    {
+        Role::create(['name' => 'editor']);
+        $editor = User::factory()->create();
+        $editor->assignRole('editor');
+
+        $postData = [
+            'title' => 'New Post Title',
+            'body' => 'New Post Body',
+            'user_id' => $editor->id,
+        ];
+
+        $response = $this->postJson(route('posts.store'), $postData);
+
+        $response->assertStatus(401)
+            ->assertJson(['message' => 'Unauthenticated.']);
+    }
 }
