@@ -6,6 +6,7 @@ use App\Http\Requests\PostDestroyRequest;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
@@ -45,6 +46,17 @@ class PostController extends Controller
         ]);
 
         return response()->json(['message' => 'Post edited successfully']);
+    }
+
+    public function postView(User $user, Post $post): JsonResponse
+    {
+        if (!$post->views()->where('user_id', $user->id)->exists()) {
+            $post->views()->attach($user);
+
+            return response()->json(['message' => 'user viewed this post', 'view' => true]);
+        }
+
+        return response()->json(['message' => 'user already viewed this post', 'view' => false]);
     }
 
     public function destroy(PostDestroyRequest $request, Post $post): JsonResponse
