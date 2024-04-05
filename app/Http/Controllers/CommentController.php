@@ -27,7 +27,7 @@ class CommentController extends Controller
             'post_id' => $request->post_id
         ]);
 
-        return response()->json(['message' => 'comment stored successfully', 'comment' => $comment]);
+        return response()->json(['message' => 'Comment created successfully', 'comment' => $comment]);
     }
 
     public function destroy(CommentDestroyRequest $request, Comment $comment): JsonResponse
